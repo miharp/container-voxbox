@@ -1,0 +1,34 @@
+---
+# Minimal pipeline to test the voxbox container locally with gitlab-ci-local.
+#
+# Run from inside this directory:
+#   cd gitlab-ci-local-test
+#   gitlab-ci-local              # runs every job
+#   gitlab-ci-local lint:puppet  # runs a single job
+#
+# The two fixes that make this work (vs. the failing example from Slack):
+#   1. entrypoint: [""]  -> lets the runner start a shell for `script:`,
+#      otherwise the image entrypoint swallows the script and you get
+#      `Don't know how to build task 'sh'`.
+#   2. -f /opt/voxbox/Rakefile  -> the bundled Rakefile moved here on
+#      recent images; `/Rakefile` no longer exists.
+
+stages:
+  - lint
+
+variables:
+  # Mirrors the container entrypoint so jobs read cleanly.
+  RAKE: bundle exec rake -f /opt/voxbox/Rakefile
+
+default:
+  image:
+    name: ghcr.io/voxpupuli/voxbox:latest
+    entrypoint: [""]
+
+lint:puppet:
+  stage: lint
+  script:
+    - $RAKE voxpupuli:custom:lint_all
+  rules:
+    - when: always
+  allow_failure: false

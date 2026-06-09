@@ -1,0 +1,23 @@
+{
+  "name": "voxpupuli-example",
+  "version": "0.1.0",
+  "author": "voxbox test harness",
+  "summary": "Minimal module for testing voxbox lint under gitlab-ci-local",
+  "license": "Apache-2.0",
+  "source": "https://github.com/voxpupuli/container-voxbox",
+  "dependencies": [],
+  "operatingsystem_support": [
+    {
+      "operatingsystem": "Debian",
+      "operatingsystemrelease": [
+        "12"
+      ]
+    }
+  ],
+  "requirements": [
+    {
+      "name": "puppet",
+      "version_requirement": ">= 7.0.0 < 9.0.0"
+    }
+  ]
+}
